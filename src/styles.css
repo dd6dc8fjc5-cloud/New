@@ -1,15 +1,32 @@
+/* Ricettario — identità visiva per un laboratorio di pasticceria:
+   carta da forno chiara, verderame (rame ossidato delle teglie),
+   e le misurazioni (grammi, prezzi) trattate come una lettura
+   digitale di bilancia, per distinguerle a colpo d'occhio. */
+
 :root {
-  --bg: #f7f5f2;
-  --surface: #ffffff;
-  --border: #e2ddd4;
-  --text: #26231f;
-  --muted: #75706a;
-  --primary: #b5651d;
-  --primary-dark: #8f4f16;
-  --danger: #b3261e;
+  --bg: #f3f0e7;
+  --surface: #fffdf9;
+  --border: #e2dccb;
+  --text: #221f1a;
+  --muted: #6f6a5d;
+
+  --ink: #22201b;
+  --ink-soft: #33302a;
+
+  --verdigris: #3f6659;
+  --verdigris-dark: #2c4a40;
+  --brass: #b8892e;
+  --brass-bright: #e0b355;
+
+  --danger: #a3372b;
   --success: #2e6b3e;
   --warning: #a3620a;
-  --radius: 10px;
+
+  --radius: 12px;
+
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * {
@@ -26,7 +43,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -37,11 +54,22 @@ select {
   font-size: 16px;
 }
 
+:focus-visible {
+  outline: 2px solid var(--verdigris);
+  outline-offset: 2px;
+}
+
+/* Ogni misurazione (grammi, prezzi, totali) è trattata come la lettura
+   di una bilancia digitale: monospaziato, tracking largo, cifre allineate. */
 .num-input,
 .num-col,
-.price-tag {
+.price-tag,
+.totals-row strong,
+.summary-list {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+  letter-spacing: 0.01em;
 }
 
 /* ---------- Layout ---------- */
@@ -67,14 +95,23 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  padding: 16px 18px;
+  background: var(--ink);
+  color: #f3f0e7;
+  border-bottom: 3px solid var(--brass);
 }
 
 .app-title {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: 0.01em;
+  color: #faf7f0;
+}
+
+.app-header .link-btn {
+  color: var(--brass-bright);
 }
 
 .app-main {
@@ -88,8 +125,8 @@ select {
   left: 0;
   right: 0;
   display: flex;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
+  background: var(--ink);
+  border-top: 1px solid #3a362e;
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 20;
 }
@@ -99,17 +136,18 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   padding: 10px 4px 8px;
   background: none;
   border: none;
-  color: var(--muted);
+  color: #9a9484;
   font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .bottom-nav-btn.active {
-  color: var(--primary);
-  font-weight: 600;
+  color: var(--brass-bright);
+  box-shadow: inset 0 2px 0 0 var(--brass-bright);
 }
 
 .bottom-nav-icon {
@@ -119,14 +157,14 @@ select {
 .page {
   max-width: 720px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 18px 16px;
 }
 
 .page-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   gap: 12px;
 }
 
@@ -135,7 +173,15 @@ h2,
 h3,
 h4 {
   margin: 0 0 12px;
-  line-height: 1.25;
+  line-height: 1.2;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.page > h2,
+.recipe-detail-header h2,
+.recipe-card-name {
+  font-size: 1.4rem;
 }
 
 .muted {
@@ -154,7 +200,7 @@ h4 {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: linear-gradient(160deg, #f7f5f2, #efe6da);
+  background: radial-gradient(circle at 20% 15%, #3a3229 0%, var(--ink) 55%);
 }
 
 .login-card {
@@ -162,29 +208,35 @@ h4 {
   max-width: 360px;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: 28px 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 32px 26px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   gap: 14px;
+  border-top: 4px solid var(--brass);
 }
 
 .login-card h1 {
   margin: 0;
   text-align: center;
+  font-size: 1.9rem;
+  font-style: italic;
 }
 
 .login-subtitle {
   text-align: center;
   color: var(--muted);
   margin: 0 0 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .login-card label {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--muted);
 }
 
@@ -195,7 +247,7 @@ label {
   flex-direction: column;
   gap: 6px;
   margin-bottom: 12px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--muted);
 }
 
@@ -210,14 +262,16 @@ input[type='file'] {
   color: var(--text);
 }
 
-input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
-}
-
 .num-input {
   text-align: right;
   max-width: 110px;
+  background: var(--ink);
+  color: var(--brass-bright);
+  border-color: var(--ink);
+}
+
+.num-input::placeholder {
+  color: #857e6c;
 }
 
 .filter-input {
@@ -231,22 +285,23 @@ input:focus {
   padding: 11px 18px;
   border-radius: 8px;
   border: 1px solid transparent;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  font-family: var(--font-sans);
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: var(--verdigris);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
+  background: var(--verdigris-dark);
 }
 
 .btn-secondary {
-  background: #eee5da;
-  color: var(--text);
+  background: #ead9b3;
+  color: var(--ink);
 }
 
 .btn-ghost {
@@ -257,7 +312,7 @@ input:focus {
 
 .btn-ghost.danger {
   color: var(--danger);
-  border-color: #e8c6c3;
+  border-color: #e3c2bc;
 }
 
 .btn-small {
@@ -286,8 +341,8 @@ input:focus {
 .link-btn {
   background: none;
   border: none;
-  color: var(--primary);
-  font-weight: 600;
+  color: var(--verdigris);
+  font-weight: 700;
   cursor: pointer;
   padding: 0;
 }
@@ -307,6 +362,18 @@ input:focus {
 
 .add-ingredient-form input[type='text']:first-child {
   flex: 1;
+  min-width: 0;
+}
+
+.add-ingredient-form .num-input {
+  max-width: 76px;
+  flex-shrink: 0;
+}
+
+.add-ingredient-form .btn {
+  flex-shrink: 0;
+  padding: 11px 14px;
+  white-space: nowrap;
 }
 
 .ingredient-list {
@@ -323,7 +390,7 @@ input:focus {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
+  padding: 13px 14px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -333,16 +400,17 @@ input:focus {
 
 .ingredient-name {
   flex: 1;
-  font-weight: 500;
+  font-weight: 600;
 }
 
+/* Prezzo al kg = lettura da bilancia digitale: chip scura, cifre ambrate. */
 .price-tag {
-  background: #f1ece3;
+  background: var(--ink);
   border: none;
   border-radius: 6px;
-  padding: 6px 10px;
-  font-weight: 600;
-  color: var(--primary-dark);
+  padding: 7px 11px;
+  font-weight: 700;
+  color: var(--brass-bright);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -364,7 +432,7 @@ input:focus {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
   display: flex;
   flex-direction: column;
   min-width: 180px;
@@ -379,6 +447,7 @@ input:focus {
   text-align: left;
   font-size: 0.95rem;
   cursor: pointer;
+  font-family: var(--font-sans);
 }
 
 .dropdown-menu button:hover {
@@ -397,6 +466,7 @@ input:focus {
 .recipe-card {
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 4px solid var(--verdigris);
   border-radius: var(--radius);
   padding: 14px 16px;
   cursor: pointer;
@@ -411,13 +481,15 @@ input:focus {
   display: flex;
   gap: 14px;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
   flex-wrap: wrap;
 }
 
 .warning-badge {
+  font-family: var(--font-sans);
   color: var(--warning);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .recipe-detail-header {
@@ -453,12 +525,13 @@ input:focus {
 }
 
 .ingredient-table th {
-  background: #f1ece3;
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 0.8rem;
+  background: var(--ink);
+  color: #cfc9b8;
+  font-weight: 700;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.07em;
+  font-family: var(--font-sans);
 }
 
 .ingredient-table tr:last-child td {
@@ -468,33 +541,44 @@ input:focus {
 .num-col {
   text-align: right;
   white-space: nowrap;
+  color: var(--ink-soft);
 }
 
+/* Peso e costo totale: la lettura più importante della pagina,
+   trattata come il display di una bilancia da banco. */
 .totals-row {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  padding: 12px 14px;
-  background: #f1ece3;
+  padding: 14px 16px;
+  background: var(--ink);
+  color: #d8d2c2;
   border-radius: var(--radius);
   margin-bottom: 14px;
   font-size: 0.95rem;
+  font-family: var(--font-sans);
 }
 
 .totals-row strong {
-  font-variant-numeric: tabular-nums;
+  color: var(--brass-bright);
+  font-size: 1.05em;
 }
 
 .totals-row-large {
   font-size: 1.05rem;
+  border-left: 4px solid var(--brass);
 }
 
 .scale-box {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px;
   margin-top: 18px;
+}
+
+.scale-box h3 {
+  font-size: 1.1rem;
 }
 
 .scale-input-row {
@@ -534,7 +618,7 @@ input:focus {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(20, 18, 15, 0.45);
+  background: rgba(20, 18, 15, 0.55);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -549,7 +633,8 @@ input:focus {
   max-height: 92vh;
   overflow-y: auto;
   border-radius: 16px 16px 0 0;
-  padding: 20px;
+  padding: 22px 20px;
+  border-top: 4px solid var(--verdigris);
 }
 
 @media (min-width: 640px) {
@@ -579,10 +664,10 @@ input:focus {
   display: grid;
   grid-template-columns: 1fr 90px 28px;
   gap: 8px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.07em;
   padding: 0 2px;
 }
 
@@ -609,21 +694,23 @@ input:focus {
 /* ---------- Feedback ---------- */
 
 .error-box {
-  background: #fbe9e7;
+  background: #f8e4e1;
   color: var(--danger);
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 0.88rem;
   margin: 10px 0;
+  border-left: 3px solid var(--danger);
 }
 
 .success-box {
-  background: #e6f4ea;
+  background: #e3ede4;
   color: var(--success);
   padding: 10px 12px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 10px 0;
+  border-left: 3px solid var(--success);
 }
 
 .summary-list {
@@ -632,9 +719,8 @@ input:focus {
   border-radius: var(--radius);
   padding: 10px 16px;
   margin: 0 0 16px;
-  font-variant-numeric: tabular-nums;
 }
 
 .summary-list li {
-  padding: 4px 0;
+  padding: 5px 0;
 }
