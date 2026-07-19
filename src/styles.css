@@ -724,3 +724,42 @@ input[type='file'] {
 .summary-list li {
   padding: 5px 0;
 }
+
+/* ---------- Lievito madre ---------- */
+
+.lm-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 16px;
+  margin-bottom: 16px;
+}
+
+.lm-form-grid label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.lm-ratio-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.lm-ratio-row .num-input {
+  max-width: 70px;
+}
+
+.lm-ratio-row span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.lm-time-input {
+  max-width: 130px;
+  text-align: right;
+}

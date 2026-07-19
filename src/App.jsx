@@ -4,10 +4,12 @@ import Login from './components/Login'
 import RecipesList from './components/recipes/RecipesList'
 import IngredientsList from './components/ingredients/IngredientsList'
 import InvoiceImport from './components/invoices/InvoiceImport'
+import LievitoMadreCalculator from './components/sourdough/LievitoMadreCalculator'
 
 const TABS = [
   { id: 'recipes', label: 'Ricette', icon: '📖' },
   { id: 'ingredients', label: 'Ingredienti', icon: '🧂' },
+  { id: 'sourdough', label: 'Lievito madre', icon: '🫙' },
   { id: 'invoices', label: 'Fatture', icon: '🧾' },
 ]
 
@@ -35,6 +37,7 @@ export default function App() {
       <main className="app-main">
         {tab === 'recipes' && <RecipesList />}
         {tab === 'ingredients' && <IngredientsList />}
+        {tab === 'sourdough' && <LievitoMadreCalculator />}
         {tab === 'invoices' && <InvoiceImport />}
       </main>
 
